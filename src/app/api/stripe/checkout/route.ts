@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
-import { createServerClient } from '@/lib/supabase/server'
+import { createServerComponentClient } from '@/lib/supabase/server'
 
 const PRICE_IDS = {
   monthly: 'price_xxx',
@@ -8,7 +8,7 @@ const PRICE_IDS = {
 }
 
 export async function POST(req: NextRequest) {
-  const supabase = createServerClient()
+  const supabase = await createServerComponentClient()
   const { data: { session } } = await supabase.auth.getSession()
   
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
