@@ -1,4 +1,4 @@
-'use client'
+ï»¿'use client'
 
 import { useState } from 'react'
 import { 
@@ -201,17 +201,17 @@ export default function AdminDrawsPage() {
                      <div className="grid grid-cols-3 gap-4">
                         <div className="space-y-1">
                            <div className="text-[10px] text-zinc-600 font-bold">MATCH 5</div>
-                           <div className="text-lg font-black text-amber-500">Â${simulationResult.pools.jackpotPool.toFixed(2)}</div>
+                           <div className="text-lg font-black text-amber-500">ï¿½${simulationResult.pools.jackpotPool.toFixed(2)}</div>
                            <div className="text-[10px] text-zinc-500">{simulationResult.winners.match5.length} winners</div>
                         </div>
                         <div className="space-y-1">
                            <div className="text-[10px] text-zinc-600 font-bold">MATCH 4</div>
-                           <div className="text-lg font-black text-zinc-200">Â${simulationResult.pools.match4Pool.toFixed(2)}</div>
+                           <div className="text-lg font-black text-zinc-200">ï¿½${simulationResult.pools.match4Pool.toFixed(2)}</div>
                            <div className="text-[10px] text-zinc-500">{simulationResult.winners.match4.length} winners</div>
                         </div>
                         <div className="space-y-1">
                            <div className="text-[10px] text-zinc-600 font-bold">MATCH 3</div>
-                           <div className="text-lg font-black text-zinc-400">Â${simulationResult.pools.match3Pool.toFixed(2)}</div>
+                           <div className="text-lg font-black text-zinc-400">ï¿½${simulationResult.pools.match3Pool.toFixed(2)}</div>
                            <div className="text-[10px] text-zinc-500">{simulationResult.winners.match3.length} winners</div>
                         </div>
                      </div>
@@ -223,7 +223,7 @@ export default function AdminDrawsPage() {
                         <AlertTriangle className="w-6 h-6 text-amber-500" />
                         <div>
                            <div className="text-sm font-black text-amber-500">No Match 5 Winners</div>
-                           <p className="text-xs text-zinc-500 mt-0.5">Â${simulationResult.pools.jackpotRollover.toFixed(2)} will be rolled over to the next month.</p>
+                           <p className="text-xs text-zinc-500 mt-0.5">ï¿½${simulationResult.pools.jackpotRollover.toFixed(2)} will be rolled over to the next month.</p>
                         </div>
                      </div>
                   )}

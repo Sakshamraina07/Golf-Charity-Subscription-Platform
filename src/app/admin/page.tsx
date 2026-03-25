@@ -1,4 +1,4 @@
-import { createAdminClient } from '@/lib/supabase/server'
+ï»¿import { createAdminClient } from '@/lib/supabase/server'
 import { 
   Users, 
   Target, 
@@ -32,8 +32,8 @@ export default async function AdminDashboardPage() {
   const stats = [
     { name: 'Total Users', value: userCount.toString(), icon: Users, trend: '+12%', color: 'blue' },
     { name: 'Active Subs', value: activeSubs.toString(), icon: Activity, trend: '+5%', color: 'emerald' },
-    { name: 'Current Prize Pool', value: `Â$${totalPrizePool.toFixed(2)}`, icon: Target, trend: '+8%', color: 'amber' },
-    { name: 'Total Prizes Paid', value: `Â$${prizePaid.toFixed(2)}`, icon: Trophy, trend: '+Â$1.2K', color: 'purple' },
+    { name: 'Current Prize Pool', value: `ï¿½$${totalPrizePool.toFixed(2)}`, icon: Target, trend: '+8%', color: 'amber' },
+    { name: 'Total Prizes Paid', value: `ï¿½$${prizePaid.toFixed(2)}`, icon: Trophy, trend: '+ï¿½$1.2K', color: 'purple' },
   ]
 
   return (

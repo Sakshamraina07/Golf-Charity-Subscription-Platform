@@ -1,4 +1,4 @@
-'use client'
+ï»¿'use client'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -111,13 +111,13 @@ export default function SubscribePage() {
                 onClick={() => setPlan('monthly')}
                 className={`flex-1 py-3 text-sm font-bold rounded-lg transition-all ${plan === 'monthly' ? 'bg-zinc-800 text-emerald-400 shadow-lg' : 'text-zinc-500 hover:text-zinc-300'}`}
               >
-                Monthly (Â$9.99)
+                Monthly (ï¿½$9.99)
               </button>
               <button 
                 onClick={() => setPlan('yearly')}
                 className={`flex-1 py-3 text-sm font-bold rounded-lg transition-all relative ${plan === 'yearly' ? 'bg-zinc-800 text-emerald-400 shadow-lg' : 'text-zinc-500 hover:text-zinc-300'}`}
               >
-                Yearly (Â$99.99)
+                Yearly (ï¿½$99.99)
                 <span className="absolute -top-2 -right-2 px-2 py-0.5 bg-emerald-500 text-zinc-950 text-[10px] font-black rounded-full">SAVE 17%</span>
               </button>
             </div>
@@ -166,24 +166,24 @@ export default function SubscribePage() {
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-zinc-400 text-sm">Direct to Charity</span>
-                <span className="font-bold text-emerald-400">Â${charityAmount.toFixed(2)}</span>
+                <span className="font-bold text-emerald-400">ï¿½${charityAmount.toFixed(2)}</span>
               </div>
               <div className="flex justify-between items-center text-zinc-400 text-sm">
                 <span className="flex items-center gap-1.5">
                   Prize Pool Allocation 
                   <Info className="w-3.5 h-3.5 opacity-50" />
                 </span>
-                <span>Â${prizePool.toFixed(2)}</span>
+                <span>ï¿½${prizePool.toFixed(2)}</span>
               </div>
               <div className="flex justify-between items-center text-zinc-400 text-sm">
                 <span className="font-medium">Platform Operations</span>
-                <span>Â${platformFee.toFixed(2)}</span>
+                <span>ï¿½${platformFee.toFixed(2)}</span>
               </div>
               
               <div className="pt-4 border-t border-zinc-800 mt-4 flex justify-between items-end">
                 <span className="text-sm font-medium text-zinc-300">Total Subscription</span>
                 <div className="text-right">
-                  <div className="text-3xl font-black">Â${amount.toFixed(2)}</div>
+                  <div className="text-3xl font-black">ï¿½${amount.toFixed(2)}</div>
                   <div className="text-[10px] text-zinc-500 uppercase tracking-widest">{plan}</div>
                 </div>
               </div>

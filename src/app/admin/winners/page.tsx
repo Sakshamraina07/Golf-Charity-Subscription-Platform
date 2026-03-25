@@ -1,4 +1,4 @@
-'use client'
+ï»¿'use client'
 
 import { useState, useEffect } from 'react'
 import { 
@@ -88,7 +88,7 @@ export default function AdminWinnersPage() {
         <div className="flex items-center gap-3">
            <div className="px-4 py-2 border border-zinc-800 bg-zinc-900 rounded-xl text-xs font-black text-emerald-400 flex items-center gap-2">
               <CheckCircle className="w-4 h-4" />
-              Â$45.2K TOTAL PAID
+              ï¿½$45.2K TOTAL PAID
            </div>
         </div>
       </div>
@@ -137,7 +137,7 @@ export default function AdminWinnersPage() {
                      </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                     <div className="text-sm font-black text-emerald-400">Â${Number(w.prize_amount).toFixed(2)}</div>
+                     <div className="text-sm font-black text-emerald-400">ï¿½${Number(w.prize_amount).toFixed(2)}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                      {isUpdating === w.id ? (
