@@ -92,7 +92,7 @@ export default function HomePage() {
               href="/signup"
               className="group px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-lg rounded-xl transition-all hover:shadow-xl hover:shadow-emerald-500/25 flex items-center gap-2"
             >
-              Start for Â£9.99/mo
+              Start for Â$9.99/mo
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
@@ -171,9 +171,9 @@ export default function HomePage() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { value: 'Â£125K+', label: 'Raised for Charity', icon: Heart },
+              { value: 'Â$125K+', label: 'Raised for Charity', icon: Heart },
               { value: '2,400+', label: 'Active Subscribers', icon: Users },
-              { value: 'Â£45K', label: 'Monthly Prize Pool', icon: Trophy },
+              { value: 'Â$45K', label: 'Monthly Prize Pool', icon: Trophy },
               { value: '12', label: 'Partner Charities', icon: Target },
             ].map((stat, i) => (
               <div
@@ -211,7 +211,7 @@ export default function HomePage() {
                 Monthly
               </div>
               <div className="flex items-baseline gap-1 mb-6">
-                <span className="text-5xl font-black">Â£9.99</span>
+                <span className="text-5xl font-black">Â$9.99</span>
                 <span className="text-zinc-500">/month</span>
               </div>
               <ul className="space-y-3 mb-8">
@@ -245,7 +245,7 @@ export default function HomePage() {
                 Yearly
               </div>
               <div className="flex items-baseline gap-1 mb-6">
-                <span className="text-5xl font-black">Â£99.99</span>
+                <span className="text-5xl font-black">Â$99.99</span>
                 <span className="text-zinc-500">/year</span>
               </div>
               <ul className="space-y-3 mb-8">

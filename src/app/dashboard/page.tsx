@@ -212,7 +212,7 @@ export default function DashboardPage() {
                 <Heart className="w-5 h-5 text-pink-400" />
               </div>
               <div className="text-right">
-                <div className="text-xl font-black text-pink-400">Â£{charityContribution.toFixed(2)}</div>
+                <div className="text-xl font-black text-pink-400">Â${charityContribution.toFixed(2)}</div>
                 <div className="text-[10px] text-zinc-500 uppercase font-bold">Total Donated</div>
               </div>
             </div>
@@ -326,7 +326,7 @@ export default function DashboardPage() {
                   <h3 className="text-sm font-bold text-zinc-500 uppercase tracking-widest">Total Winnings</h3>
                 </div>
                 <div className="text-right">
-                  <div className="text-3xl font-black text-amber-500">Â£{totalWon.toFixed(2)}</div>
+                  <div className="text-3xl font-black text-amber-500">Â${totalWon.toFixed(2)}</div>
                 </div>
              </div>
 
@@ -337,7 +337,7 @@ export default function DashboardPage() {
                      <div className="text-xs font-bold capitalize text-zinc-300">{w.match_type.replace('_', ' ')}</div>
                      <div className="text-[10px] text-zinc-500 capitalize">{w.draws.month} Draw â€¢ {w.payment_status}</div>
                    </div>
-                   <div className="font-black text-emerald-400">+Â£{Number(w.prize_amount).toFixed(2)}</div>
+                   <div className="font-black text-emerald-400">+Â${Number(w.prize_amount).toFixed(2)}</div>
                  </div>
                ))}
                {winners.length === 0 && (
