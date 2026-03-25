@@ -57,7 +57,7 @@ export default function SubscribePage() {
   const handleSubscribe = async () => {
     setSubmitting(true)
     try {
-      const res = await fetch('/api/subscribe', {
+      const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -67,17 +67,17 @@ export default function SubscribePage() {
         })
       })
       
-      const data = await res.json()
-      if (data.success) {
-        router.push('/dashboard')
-        router.refresh()
+      const { url, error } = await res.json()
+      
+      if (url) {
+        window.location.href = url
       } else {
-        alert(data.error || 'Something went wrong')
+        alert(error || 'Something went wrong')
+        setSubmitting(false)
       }
     } catch (err) {
       console.error(err)
-      alert('Failed to connect to server')
-    } finally {
+      alert('Failed to connect to Stripe')
       setSubmitting(false)
     }
   }
@@ -105,9 +105,7 @@ export default function SubscribePage() {
         </header>
 
         <div className="grid md:grid-cols-2 gap-8">
-          {}
           <div className="space-y-8">
-            {}
             <div className="p-1 bg-zinc-900 rounded-xl flex">
               <button 
                 onClick={() => setPlan('monthly')}
@@ -124,7 +122,6 @@ export default function SubscribePage() {
               </button>
             </div>
 
-            {}
             <div className="space-y-3">
               <label className="text-sm font-bold text-zinc-400 flex items-center gap-2">
                 <Heart className="w-4 h-4" /> Select Charity
@@ -143,7 +140,6 @@ export default function SubscribePage() {
               </div>
             </div>
 
-            {}
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <label className="text-sm font-bold text-zinc-400">Your Contribution</label>
@@ -164,7 +160,6 @@ export default function SubscribePage() {
             </div>
           </div>
 
-          {}
           <div className="glass p-8 rounded-3xl space-y-8 h-fit animate-fade-in">
             <h3 className="text-xl font-bold">Contribution Breakdown</h3>
             
@@ -181,7 +176,7 @@ export default function SubscribePage() {
                 <span>£{prizePool.toFixed(2)}</span>
               </div>
               <div className="flex justify-between items-center text-zinc-400 text-sm">
-                <span>Platform Operations</span>
+                <span className="font-medium">Platform Operations</span>
                 <span>£{platformFee.toFixed(2)}</span>
               </div>
               
@@ -210,13 +205,12 @@ export default function SubscribePage() {
                 )}
               </button>
               <p className="text-[10px] text-center text-zinc-500 px-4">
-                Secure mock payment. By clicking confirm, you agree to our Terms of Service and Privacy Policy.
+                Powered by Stripe. Secure payment processing.
               </p>
             </div>
           </div>
         </div>
 
-        {}
         <div className="mt-12 text-center">
           <Link href="/dashboard" className="text-zinc-500 hover:text-emerald-400 text-sm inline-flex items-center gap-2 group">
             <LayoutDashboard className="w-4 h-4" />

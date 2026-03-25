@@ -33,7 +33,19 @@ After signing up with `admin@test.com`, run:
 UPDATE public.profiles SET role = 'admin' WHERE email = 'admin@test.com';
 ```
 
-### 5. Install & Run
+### 5. Stripe Integration (NEW)
+1. Install Stripe CLI for local testing.
+2. Run `stripe listen --forward-to localhost:3000/api/stripe/webhook`.
+3. Add the resulting webhook secret to `.env.local`.
+4. Create Monthly/Yearly products in Stripe and update `PRICE_IDS` in `src/app/api/stripe/checkout/route.ts`.
+
+### 6. Schema Update (STRICTLY REQUIRED)
+Run this in Supabase SQL Editor:
+```sql
+ALTER TABLE public.subscriptions ADD COLUMN stripe_subscription_id TEXT;
+```
+
+### 7. Install & Run
 ```bash
 npm install
 npm run dev
