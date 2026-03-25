@@ -18,9 +18,9 @@ export async function createServerComponentClient() {
               cookieStore.set(name, value, options)
             )
           } catch {
-            
-            
-            
+
+
+
           }
         },
       },
@@ -37,7 +37,7 @@ export function createAdminClient() {
         getAll() {
           return []
         },
-        setAll() {}
+        setAll() { }
       }
     }
   )
