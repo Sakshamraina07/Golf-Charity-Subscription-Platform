@@ -3,17 +3,19 @@
 export const dynamic = 'force-dynamic'
 
 import { useEffect, useState, Suspense } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Loader2, CheckCircle } from 'lucide-react'
 
 function SuccessContent() {
   const router = useRouter()
+  const params = useSearchParams()
+  const sessionId = params.get('session_id')
   const [attempts, setAttempts] = useState(0)
 
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
-        const res = await fetch('/api/subscribe/verify')
+        const res = await fetch(`/api/subscribe/verify?session_id=${sessionId}`)
         const data = await res.json()
 
         if (data.active) {
@@ -34,7 +36,7 @@ function SuccessContent() {
     }, 2000)
 
     return () => clearInterval(interval)
-  }, [router])
+  }, [router, sessionId])
 
   return (
     <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center gap-6 text-white">
