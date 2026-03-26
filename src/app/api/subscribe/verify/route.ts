@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
-import { createServerComponentClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/server'
 import { cookies } from 'next/headers'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 
 export async function GET() {
   const supabase = createServerComponentClient({ cookies })
@@ -8,7 +9,8 @@ export async function GET() {
 
   if (!session) return NextResponse.json({ active: false })
 
-  const { data } = await supabase
+  const adminClient = createAdminClient()
+  const { data } = await adminClient
     .from('subscriptions')
     .select('status')
     .eq('user_id', session.user.id)
