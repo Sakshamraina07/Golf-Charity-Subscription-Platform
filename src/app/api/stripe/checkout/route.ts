@@ -3,8 +3,8 @@ import { stripe } from '@/lib/stripe'
 import { createServerComponentClient } from '@/lib/supabase/server'
 
 const PRICE_IDS = {
-  monthly: 'price_xxx',
-  yearly: 'price_xxx',
+  monthly: 'price_1TF800HwHQD9c5OvUIF4vTvC',
+  yearly: 'price_1TF811HwHQD9c5OvSHFCOAMa',
 }
 
 export async function POST(req: NextRequest) {
