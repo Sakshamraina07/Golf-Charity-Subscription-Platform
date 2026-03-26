@@ -1,21 +1,14 @@
 ﻿'use client'
 
 import { useState, useEffect } from 'react'
-import { 
-  Trophy, 
-  CheckCircle, 
-  XCircle, 
-  Clock, 
-  User, 
-  History, 
-  Eye, 
-  MoreVertical, 
+import {
+  CheckCircle,
+  XCircle,
+  Clock,
+  User,
   Loader2,
-  Table as TableIcon,
-  Search,
-  ExternalLink,
-  Ban,
-  Check
+  MoreVertical,
+  AlertTriangle
 } from 'lucide-react'
 import { formatDate } from '@/lib/scores'
 
@@ -62,9 +55,8 @@ export default function AdminWinnersPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: winnerId, ...updates })
     })
-
     if (res.ok) {
-       setWinners(prev => prev.map(w => w.id === winnerId ? { ...w, ...updates } : w))
+      setWinners(prev => prev.map(w => w.id === winnerId ? { ...w, ...updates } : w))
     }
     setIsUpdating(null)
   }
@@ -77,19 +69,22 @@ export default function AdminWinnersPage() {
     )
   }
 
+  const totalPaid = winners
+    .filter(w => w.payment_status === 'paid')
+    .reduce((acc, w) => acc + Number(w.prize_amount), 0)
+
   return (
     <div className="space-y-8">
-      {}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-4xl font-black">Prize Winners</h1>
           <p className="text-zinc-500">Verify winnings and manage payouts</p>
         </div>
         <div className="flex items-center gap-3">
-           <div className="px-4 py-2 border border-zinc-800 bg-zinc-900 rounded-xl text-xs font-black text-emerald-400 flex items-center gap-2">
-              <CheckCircle className="w-4 h-4" />
-              �$45.2K TOTAL PAID
-           </div>
+          <div className="px-4 py-2 border border-zinc-800 bg-zinc-900 rounded-xl text-xs font-black text-emerald-400 flex items-center gap-2">
+            <CheckCircle className="w-4 h-4" />
+            £{totalPaid.toFixed(2)} TOTAL PAID
+          </div>
         </div>
       </div>
 
@@ -116,62 +111,60 @@ export default function AdminWinnersPage() {
                         <User className="w-4 h-4 text-zinc-500" />
                       </div>
                       <div>
-                        <div className="text-sm font-bold text-zinc-200">{w.profiles.full_name}</div>
-                        <div className="text-[10px] text-zinc-500">{w.profiles.email}</div>
+                        <div className="text-sm font-bold text-zinc-200">{w.profiles?.full_name || 'Unknown'}</div>
+                        <div className="text-[10px] text-zinc-500">{w.profiles?.email}</div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                     <div className="text-sm font-bold text-zinc-300">{w.draws.month}</div>
-                     <div className="text-[10px] text-zinc-600 font-mono tracking-tighter">
-                        {w.draws.winning_numbers.join(' • ')}
-                     </div>
+                    <div className="text-sm font-bold text-zinc-300">{w.draws?.month}</div>
+                    <div className="text-[10px] text-zinc-600 font-mono tracking-tighter">
+                      {w.draws?.winning_numbers?.join(' • ')}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                     <span className={`inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full ${
-                       w.match_type === 'match_5' ? 'bg-amber-500/10 text-amber-500' :
-                       w.match_type === 'match_4' ? 'bg-blue-500/10 text-blue-400' :
-                       'bg-zinc-800 text-zinc-500'
-                     }`}>
-                        {w.match_type.replace('_', ' ')}
-                     </span>
+                    <span className={`inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full ${w.match_type === 'match_5' ? 'bg-amber-500/10 text-amber-500' :
+                      w.match_type === 'match_4' ? 'bg-blue-500/10 text-blue-400' :
+                        'bg-zinc-800 text-zinc-500'
+                      }`}>
+                      {w.match_type?.replace('_', ' ')}
+                    </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                     <div className="text-sm font-black text-emerald-400">�${Number(w.prize_amount).toFixed(2)}</div>
+                    <div className="text-sm font-black text-emerald-400">£{Number(w.prize_amount).toFixed(2)}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                     {isUpdating === w.id ? (
-                        <Loader2 className="w-4 h-4 animate-spin text-emerald-500" />
-                     ) : (
-                        <div className="flex gap-1">
-                           <button 
-                             onClick={() => handleUpdate(w.id, { verification_status: 'approved' })}
-                             className={`p-1.5 rounded-lg border transition-all ${w.verification_status === 'approved' ? 'bg-emerald-500 text-zinc-950 border-emerald-500 shadow-lg shadow-emerald-500/20' : 'bg-zinc-900 border-zinc-800 text-zinc-600 hover:text-emerald-400'}`}
-                           >
-                              <CheckCircle className="w-3.5 h-3.5" />
-                           </button>
-                           <button 
-                             onClick={() => handleUpdate(w.id, { verification_status: 'rejected' })}
-                             className={`p-1.5 rounded-lg border transition-all ${w.verification_status === 'rejected' ? 'bg-red-500 text-zinc-950 border-red-500 shadow-lg shadow-red-500/20' : 'bg-zinc-900 border-zinc-800 text-zinc-600 hover:text-red-400'}`}
-                           >
-                              <XCircle className="w-3.5 h-3.5" />
-                           </button>
-                        </div>
-                     )}
+                    {isUpdating === w.id ? (
+                      <Loader2 className="w-4 h-4 animate-spin text-emerald-500" />
+                    ) : (
+                      <div className="flex gap-1">
+                        <button
+                          onClick={() => handleUpdate(w.id, { verification_status: 'approved' })}
+                          className={`p-1.5 rounded-lg border transition-all ${w.verification_status === 'approved' ? 'bg-emerald-500 text-zinc-950 border-emerald-500' : 'bg-zinc-900 border-zinc-800 text-zinc-600 hover:text-emerald-400'}`}
+                        >
+                          <CheckCircle className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => handleUpdate(w.id, { verification_status: 'rejected' })}
+                          className={`p-1.5 rounded-lg border transition-all ${w.verification_status === 'rejected' ? 'bg-red-500 text-zinc-950 border-red-500' : 'bg-zinc-900 border-zinc-800 text-zinc-600 hover:text-red-400'}`}
+                        >
+                          <XCircle className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                     <button 
-                        onClick={() => handleUpdate(w.id, { payment_status: w.payment_status === 'paid' ? 'pending' : 'paid' })}
-                        disabled={isUpdating === w.id}
-                        className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-black transition-all ${
-                           w.payment_status === 'paid' 
-                              ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
-                              : 'bg-zinc-900 text-zinc-600 border border-zinc-800 hover:text-zinc-300'
+                    <button
+                      onClick={() => handleUpdate(w.id, { payment_status: w.payment_status === 'paid' ? 'pending' : 'paid' })}
+                      disabled={isUpdating === w.id}
+                      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-black transition-all ${w.payment_status === 'paid'
+                        ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                        : 'bg-zinc-900 text-zinc-600 border border-zinc-800 hover:text-zinc-300'
                         }`}
-                     >
-                        <Clock className="w-3 h-3" />
-                        {w.payment_status === 'paid' ? 'PAID' : 'PENDING'}
-                     </button>
+                    >
+                      <Clock className="w-3 h-3" />
+                      {w.payment_status === 'paid' ? 'PAID' : 'PENDING'}
+                    </button>
                   </td>
                   <td className="px-6 py-4 text-right">
                     <button className="p-2 text-zinc-700 hover:text-zinc-300 transition-colors">
@@ -184,7 +177,7 @@ export default function AdminWinnersPage() {
           </table>
           {winners.length === 0 && (
             <div className="py-20 text-center text-zinc-500">
-               No winners found in the specified month.
+              No winners found yet.
             </div>
           )}
         </div>
