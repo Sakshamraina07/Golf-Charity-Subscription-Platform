@@ -1,35 +1,40 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+export const dynamic = 'force-dynamic'
+
+import { useEffect, useState, Suspense } from 'react'
+import { useRouter } from 'next/navigation'
 import { Loader2, CheckCircle } from 'lucide-react'
 
-export default function SubscribeSuccessPage() {
+function SuccessContent() {
   const router = useRouter()
-  const params = useSearchParams()
   const [attempts, setAttempts] = useState(0)
 
   useEffect(() => {
-    // Poll every 2 seconds to check if subscription is active
     const interval = setInterval(async () => {
-      const res = await fetch('/api/subscribe/verify')
-      const data = await res.json()
+      try {
+        const res = await fetch('/api/subscribe/verify')
+        const data = await res.json()
 
-      if (data.active) {
-        clearInterval(interval)
-        router.push('/dashboard')
-      } else {
-        setAttempts(a => a + 1)
-        // After 10 attempts (20s), force redirect anyway
-        if (attempts > 10) {
+        if (data.active) {
           clearInterval(interval)
           router.push('/dashboard')
+        } else {
+          setAttempts(a => {
+            if (a > 10) {
+              clearInterval(interval)
+              router.push('/dashboard')
+            }
+            return a + 1
+          })
         }
+      } catch {
+        setAttempts(a => a + 1)
       }
     }, 2000)
 
     return () => clearInterval(interval)
-  }, [attempts, router])
+  }, [router])
 
   return (
     <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center gap-6 text-white">
@@ -38,5 +43,17 @@ export default function SubscribeSuccessPage() {
       <p className="text-zinc-400">Setting up your account...</p>
       <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
     </div>
+  )
+}
+
+export default function SubscribeSuccessPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
+      </div>
+    }>
+      <SuccessContent />
+    </Suspense>
   )
 }
