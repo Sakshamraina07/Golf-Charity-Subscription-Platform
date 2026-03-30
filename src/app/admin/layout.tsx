@@ -23,6 +23,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'Winners', href: '/admin/winners', icon: Trophy },
   ]
 
+  if (pathname === '/admin/login') {
+    return <>{children}</>;
+  }
+
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-50 flex">
       {}

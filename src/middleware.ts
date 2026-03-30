@@ -39,12 +39,12 @@ export async function middleware(request: NextRequest) {
   }
 
   
-  const publicRoutes = ['/', '/login', '/signup', '/charities']
+  const publicRoutes = ['/', '/login', '/signup', '/charities', '/admin/login']
   const isPublicRoute = publicRoutes.includes(pathname)
 
   if (isPublicRoute) {
     
-    if (user && (pathname === '/login' || pathname === '/signup')) {
+    if (user && (pathname === '/login' || pathname === '/signup' || pathname === '/admin/login')) {
       return NextResponse.redirect(new URL('/dashboard', request.url))
     }
     return supabaseResponse
@@ -52,6 +52,10 @@ export async function middleware(request: NextRequest) {
 
   
   if (!user) {
+    if (pathname.startsWith('/admin')) {
+      const url = new URL('/admin/login', request.url)
+      return NextResponse.redirect(url)
+    }
     const url = new URL('/login', request.url)
     return NextResponse.redirect(url)
   }
