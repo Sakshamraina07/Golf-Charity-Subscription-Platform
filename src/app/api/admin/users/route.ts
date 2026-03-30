@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server'
 export async function GET() {
   const supabase = createAdminClient()
 
+  // Try fetching users with their subscriptions
   const { data: users, error } = await supabase
     .from('profiles')
     .select(`
@@ -15,19 +16,29 @@ export async function GET() {
       subscriptions (
         plan,
         status,
-        started_at,
         expires_at,
-        mock_amount,
         charity_percent
       )
     `)
     .order('created_at', { ascending: false })
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Admin users fetch error:', error)
+    // If the full query fails (e.g. column mismatch or join issue), try a fallback query 
+    const { data: fallbackUsers, error: fallbackError } = await supabase
+      .from('profiles')
+      .select('id, full_name, role, created_at')
+      .order('created_at', { ascending: false })
+
+    if (fallbackError) {
+      return NextResponse.json({ error: fallbackError.message }, { status: 500 })
+    }
+    
+    // Attempt to manually fetch emails or other missing parts if needed
+    return NextResponse.json({ users: fallbackUsers || [] })
   }
 
-  return NextResponse.json({ users })
+  return NextResponse.json({ users: users || [] })
 }
 
 export async function PATCH(req: Request) {

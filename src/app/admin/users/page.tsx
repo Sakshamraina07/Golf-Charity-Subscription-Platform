@@ -20,16 +20,15 @@ import { formatDate } from '@/lib/scores'
 interface UserProfile {
   id: string
   full_name: string
-  email: string
+  email?: string
   role: string
   created_at: string
-  subscriptions: {
+  subscriptions?: {
     plan: string
     status: string
     expires_at: string
-    mock_amount: number
     charity_percent: number
-  } | null
+  }[]
 }
 
 export default function AdminUsersPage() {
@@ -130,12 +129,12 @@ export default function AdminUsersPage() {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {u.subscriptions ? (
+                    {u.subscriptions && u.subscriptions.length > 0 ? (
                       <div>
-                        <div className="text-sm font-bold capitalize text-zinc-300">{u.subscriptions.plan}</div>
+                        <div className="text-sm font-bold capitalize text-zinc-300">{u.subscriptions[0].plan}</div>
                         <div className="text-[10px] text-zinc-600 flex items-center gap-1">
                           <Calendar className="w-3 h-3" />
-                          Exp: {formatDate(u.subscriptions.expires_at)}
+                          Exp: {formatDate(u.subscriptions[0].expires_at)}
                         </div>
                       </div>
                     ) : (
@@ -143,7 +142,7 @@ export default function AdminUsersPage() {
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {u.subscriptions?.status === 'active' ? (
+                    {u.subscriptions && u.subscriptions[0]?.status === 'active' ? (
                        <span className="inline-flex items-center gap-1 text-[10px] font-black bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full uppercase tracking-widest">
                           <CheckCircle2 className="w-2.5 h-2.5" />
                           Active
@@ -156,12 +155,12 @@ export default function AdminUsersPage() {
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {u.subscriptions && (
+                    {u.subscriptions && u.subscriptions.length > 0 && (
                       <div className="flex items-center gap-2">
                         <div className="w-16 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                          <div className="h-full bg-pink-500" style={{ width: `${u.subscriptions.charity_percent}%` }} />
+                          <div className="h-full bg-pink-500" style={{ width: `${u.subscriptions[0].charity_percent}%` }} />
                         </div>
-                        <span className="text-[10px] font-black text-zinc-400">{u.subscriptions.charity_percent}%</span>
+                        <span className="text-[10px] font-black text-zinc-400">{u.subscriptions[0].charity_percent}%</span>
                       </div>
                     )}
                   </td>
