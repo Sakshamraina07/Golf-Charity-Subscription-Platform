@@ -26,6 +26,10 @@ export default function HomePage() {
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
             <Link href="/charities" className="hover:text-emerald-400 transition-colors">Charities</Link>
+            <Link href="/admin" className="hover:text-emerald-400 transition-colors flex items-center gap-1">
+              <Shield className="w-4 h-4" />
+              Admin
+            </Link>
             <Link href="/login" className="hover:text-white transition-colors">Login</Link>
             <Link 
               href="/signup" 
