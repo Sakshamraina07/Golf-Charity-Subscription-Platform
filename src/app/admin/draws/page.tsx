@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState } from 'react'
 import { 
@@ -23,6 +23,7 @@ export default function AdminDrawsPage() {
   const [publishing, setPublishing] = useState(false)
   const [month, setMonth] = useState('March 2026')
   const [simulationResult, setSimulationResult] = useState<any>(null)
+  const [drawType, setDrawType] = useState('random')
   const [error, setError] = useState('')
 
   const handleSimulate = async () => {
@@ -32,7 +33,7 @@ export default function AdminDrawsPage() {
       const res = await fetch('/api/admin/draws/run', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ month, draw_type: 'random' })
+        body: JSON.stringify({ month, draw_type: drawType })
       })
       const data = await res.json()
       if (data.error) {
@@ -71,7 +72,7 @@ export default function AdminDrawsPage() {
 
   return (
     <div className="space-y-12">
-      {}
+      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-4xl font-black">Draw Management</h1>
@@ -87,7 +88,7 @@ export default function AdminDrawsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        {}
+        {/* Config */}
         <section className="glass p-8 rounded-3xl space-y-8 h-fit">
            <div className="flex items-center gap-3">
              <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
@@ -119,8 +120,26 @@ export default function AdminDrawsPage() {
               <div className="space-y-2">
                 <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Draw Type</label>
                 <div className="grid grid-cols-2 gap-2">
-                  <button className="p-3 border-2 border-emerald-500 bg-emerald-500/5 rounded-xl text-xs font-black text-emerald-400">RANDOM</button>
-                  <button className="p-3 border-2 border-zinc-900 bg-zinc-950 rounded-xl text-xs font-black text-zinc-700 cursor-not-allowed">ALGORITHMIC (V2)</button>
+                  <button 
+                    onClick={() => setDrawType('random')}
+                    className={`p-3 border-2 rounded-xl text-xs font-black transition-all ${
+                      drawType === 'random' 
+                        ? 'border-emerald-500 bg-emerald-500/5 text-emerald-400' 
+                        : 'border-zinc-900 bg-zinc-950 text-zinc-600 hover:text-zinc-400'
+                    }`}
+                  >
+                    RANDOM
+                  </button>
+                  <button 
+                    onClick={() => setDrawType('algorithmic')}
+                    className={`p-3 border-2 rounded-xl text-xs font-black transition-all ${
+                      drawType === 'algorithmic' 
+                        ? 'border-blue-500 bg-blue-500/5 text-blue-400' 
+                        : 'border-zinc-900 bg-zinc-950 text-zinc-600 hover:text-zinc-400'
+                    }`}
+                  >
+                    ALGORITHMIC (V2)
+                  </button>
                 </div>
               </div>
 
@@ -150,10 +169,10 @@ export default function AdminDrawsPage() {
            </div>
         </section>
 
-        {}
+        {/* Results */}
         <section className="lg:col-span-2 space-y-8 animate-fade-in relative min-h-[400px]">
            {!simulationResult && !loading && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950/50 rounded-3xl border border-dashed border-zinc-900 border-2 text-zinc-800">
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950/50 rounded-3xl border-2 border-dashed border-zinc-900 text-zinc-800">
                  <Zap className="w-12 h-12 mb-4 opacity-5" />
                  <p className="text-sm font-bold uppercase tracking-widest opacity-20">Awaiting simulation input</p>
               </div>
@@ -169,7 +188,7 @@ export default function AdminDrawsPage() {
                </div>
 
                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {}
+                  {/* Winning numbers */}
                   <div className="glass p-6 rounded-3xl space-y-4">
                      <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Winning Sequence</p>
                      <div className="flex gap-2">
@@ -181,7 +200,7 @@ export default function AdminDrawsPage() {
                      </div>
                   </div>
 
-                  {}
+                  {/* Participants */}
                   <div className="glass p-6 rounded-3xl flex items-center justify-between">
                      <div>
                        <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Participants</p>
@@ -192,7 +211,7 @@ export default function AdminDrawsPage() {
                      </div>
                   </div>
 
-                  {}
+                  {/* Prize distribution */}
                   <div className="glass p-6 rounded-3xl space-y-4 lg:col-span-2">
                      <div className="flex items-center justify-between">
                        <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Prize Distribution</p>
@@ -201,34 +220,34 @@ export default function AdminDrawsPage() {
                      <div className="grid grid-cols-3 gap-4">
                         <div className="space-y-1">
                            <div className="text-[10px] text-zinc-600 font-bold">MATCH 5</div>
-                           <div className="text-lg font-black text-amber-500">�${simulationResult.pools.jackpotPool.toFixed(2)}</div>
+                           <div className="text-lg font-black text-amber-500">£{simulationResult.pools.jackpotPool.toFixed(2)}</div>
                            <div className="text-[10px] text-zinc-500">{simulationResult.winners.match5.length} winners</div>
                         </div>
                         <div className="space-y-1">
                            <div className="text-[10px] text-zinc-600 font-bold">MATCH 4</div>
-                           <div className="text-lg font-black text-zinc-200">�${simulationResult.pools.match4Pool.toFixed(2)}</div>
+                           <div className="text-lg font-black text-zinc-200">£{simulationResult.pools.match4Pool.toFixed(2)}</div>
                            <div className="text-[10px] text-zinc-500">{simulationResult.winners.match4.length} winners</div>
                         </div>
                         <div className="space-y-1">
                            <div className="text-[10px] text-zinc-600 font-bold">MATCH 3</div>
-                           <div className="text-lg font-black text-zinc-400">�${simulationResult.pools.match3Pool.toFixed(2)}</div>
+                           <div className="text-lg font-black text-zinc-400">£{simulationResult.pools.match3Pool.toFixed(2)}</div>
                            <div className="text-[10px] text-zinc-500">{simulationResult.winners.match3.length} winners</div>
                         </div>
                      </div>
                   </div>
 
-                  {}
+                  {/* Rollover */}
                   {simulationResult.pools.jackpotRollover > 0 && (
                      <div className="glass p-6 rounded-3xl border-amber-500/30 bg-amber-500/5 flex items-center lg:col-span-2 gap-4">
                         <AlertTriangle className="w-6 h-6 text-amber-500" />
                         <div>
                            <div className="text-sm font-black text-amber-500">No Match 5 Winners</div>
-                           <p className="text-xs text-zinc-500 mt-0.5">�${simulationResult.pools.jackpotRollover.toFixed(2)} will be rolled over to the next month.</p>
+                           <p className="text-xs text-zinc-500 mt-0.5">£{simulationResult.pools.jackpotRollover.toFixed(2)} will be rolled over to the next month.</p>
                         </div>
                      </div>
                   )}
 
-                  {}
+                  {/* Publish */}
                   <div className="lg:col-span-2 pt-12 text-center space-y-6">
                     <div className="flex flex-col items-center gap-1">
                        <h3 className="text-2xl font-black">Ready to Publish?</h3>

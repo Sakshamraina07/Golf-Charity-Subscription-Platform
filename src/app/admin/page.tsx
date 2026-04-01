@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState } from 'react'
 import {
@@ -20,6 +20,7 @@ export default function AdminDrawsPage() {
   const [publishing, setPublishing] = useState(false)
   const [month, setMonth] = useState('March 2026')
   const [simulationResult, setSimulationResult] = useState<any>(null)
+  const [drawType, setDrawType] = useState('random')
   const [error, setError] = useState('')
 
   const handleSimulate = async () => {
@@ -29,7 +30,7 @@ export default function AdminDrawsPage() {
       const res = await fetch('/api/admin/draws/run', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ month, draw_type: 'random' })
+        body: JSON.stringify({ month, draw_type: drawType })
       })
       const data = await res.json()
       if (data.error) {
@@ -115,8 +116,26 @@ export default function AdminDrawsPage() {
             <div className="space-y-2">
               <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Draw Type</label>
               <div className="grid grid-cols-2 gap-2">
-                <button className="p-3 border-2 border-emerald-500 bg-emerald-500/5 rounded-xl text-xs font-black text-emerald-400">RANDOM</button>
-                <button className="p-3 border-2 border-zinc-900 bg-zinc-950 rounded-xl text-xs font-black text-zinc-700 cursor-not-allowed">ALGORITHMIC (V2)</button>
+                <button 
+                  onClick={() => setDrawType('random')}
+                  className={`p-3 border-2 rounded-xl text-xs font-black transition-all ${
+                    drawType === 'random' 
+                      ? 'border-emerald-500 bg-emerald-500/5 text-emerald-400' 
+                      : 'border-zinc-900 bg-zinc-950 text-zinc-600 hover:text-zinc-400'
+                  }`}
+                >
+                  RANDOM
+                </button>
+                <button 
+                  onClick={() => setDrawType('algorithmic')}
+                  className={`p-3 border-2 rounded-xl text-xs font-black transition-all ${
+                    drawType === 'algorithmic' 
+                      ? 'border-blue-500 bg-blue-500/5 text-blue-400' 
+                      : 'border-zinc-900 bg-zinc-950 text-zinc-600 hover:text-zinc-400'
+                  }`}
+                >
+                  ALGORITHMIC (V2)
+                </button>
               </div>
             </div>
 

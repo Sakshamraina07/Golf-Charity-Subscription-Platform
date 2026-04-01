@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    const result = await runDrawSimulation(month)
+    const result = await runDrawSimulation(month, draw_type)
 
     if ('error' in result) {
       return NextResponse.json({ error: result.error }, { status: 400 })
