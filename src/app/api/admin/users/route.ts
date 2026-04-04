@@ -33,7 +33,7 @@ export async function GET() {
     if (fallbackError) {
       return NextResponse.json({ error: fallbackError.message }, { status: 500 })
     }
-    
+
     // Attempt to manually fetch emails or other missing parts if needed
     return NextResponse.json({ users: fallbackUsers || [] })
   }

@@ -20,22 +20,40 @@ export default function SignupPage() {
     setLoading(true)
     setError('')
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { full_name: fullName },
-      },
-    })
+    try {
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, fullName })
+      })
 
-    if (error) {
-      setError(error.message)
+      const data = await res.json()
+
+      if (data.error) {
+        setError(data.error)
+        setLoading(false)
+        return
+      }
+
+      // Bypass successful, now auto-login using the client SDK
+      const { error: loginError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+
+      if (loginError) {
+        setError('Account created securely! Please sign in.')
+        // Redirect to login if auto-login fails
+        router.push('/login')
+        return
+      }
+
+      router.push('/subscribe')
+      router.refresh()
+    } catch (err: any) {
+      setError('Connection to auth server failed. Please try again.')
       setLoading(false)
-      return
     }
-
-    router.push('/subscribe')
-    router.refresh()
   }
 
   return (
