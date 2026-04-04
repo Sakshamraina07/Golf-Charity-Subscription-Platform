@@ -10,7 +10,6 @@ export async function GET() {
     .select(`
       id,
       full_name,
-      email,
       role,
       created_at,
       subscriptions (
@@ -24,17 +23,27 @@ export async function GET() {
 
   if (error) {
     console.error('Admin users fetch error:', error)
-    // If the full query fails (e.g. column mismatch or join issue), try a fallback query 
+    // Updated fallback to still include subscriptions
     const { data: fallbackUsers, error: fallbackError } = await supabase
       .from('profiles')
-      .select('id, full_name, role, created_at')
+      .select(`
+        id, 
+        full_name, 
+        role, 
+        created_at,
+        subscriptions (
+          plan,
+          status,
+          expires_at,
+          charity_percent
+        )
+      `)
       .order('created_at', { ascending: false })
 
     if (fallbackError) {
       return NextResponse.json({ error: fallbackError.message }, { status: 500 })
     }
-
-    // Attempt to manually fetch emails or other missing parts if needed
+    
     return NextResponse.json({ users: fallbackUsers || [] })
   }
 

@@ -40,7 +40,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: drawError.message }, { status: 500 })
     }
 
-    
+    // 4. Record entry for participants & delete old winners (rerun protection)
+    await supabase.from('winners').delete().eq('draw_id', draw.id)
+
     for (const p of result.participants) {
       await supabase
         .from('draw_entries')

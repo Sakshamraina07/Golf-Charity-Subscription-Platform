@@ -101,7 +101,10 @@ export async function runDrawSimulation(month: string, drawType: string = 'rando
 
   participants.forEach(p => {
     let matchCount = 0
-    p.scores.forEach(s => {
+    // Use a Set to ensure we only match against distinct participant numbers
+    const participantScoresSet = new Set(p.scores)
+    
+    participantScoresSet.forEach(s => {
       if (winNumbersSet.has(s)) matchCount++
     })
 
