@@ -112,7 +112,11 @@ export default function AdminUsersPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-900/50">
-              {filteredUsers.map((u) => (
+              {filteredUsers.map((u) => {
+                const activeSub = u.subscriptions?.find(s => s.status === 'active') || u.subscriptions?.[0]
+                const isActive = activeSub?.status === 'active'
+
+                return (
                 <tr key={u.id} className="hover:bg-zinc-900/20 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-3">
@@ -129,12 +133,12 @@ export default function AdminUsersPage() {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {u.subscriptions && u.subscriptions.length > 0 ? (
+                    {activeSub ? (
                       <div>
-                        <div className="text-sm font-bold capitalize text-zinc-300">{u.subscriptions[0].plan}</div>
+                        <div className="text-sm font-bold capitalize text-zinc-300">{activeSub.plan}</div>
                         <div className="text-[10px] text-zinc-600 flex items-center gap-1">
                           <Calendar className="w-3 h-3" />
-                          Exp: {formatDate(u.subscriptions[0].expires_at)}
+                          Exp: {formatDate(activeSub.expires_at)}
                         </div>
                       </div>
                     ) : (
@@ -142,7 +146,7 @@ export default function AdminUsersPage() {
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {u.subscriptions && u.subscriptions[0]?.status === 'active' ? (
+                    {isActive ? (
                        <span className="inline-flex items-center gap-1 text-[10px] font-black bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full uppercase tracking-widest">
                           <CheckCircle2 className="w-2.5 h-2.5" />
                           Active
@@ -155,12 +159,12 @@ export default function AdminUsersPage() {
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {u.subscriptions && u.subscriptions.length > 0 && (
+                    {activeSub && (
                       <div className="flex items-center gap-2">
                         <div className="w-16 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                          <div className="h-full bg-pink-500" style={{ width: `${u.subscriptions[0].charity_percent}%` }} />
+                          <div className="h-full bg-pink-500" style={{ width: `${activeSub.charity_percent}%` }} />
                         </div>
-                        <span className="text-[10px] font-black text-zinc-400">{u.subscriptions[0].charity_percent}%</span>
+                        <span className="text-[10px] font-black text-zinc-400">{activeSub.charity_percent}%</span>
                       </div>
                     )}
                   </td>
@@ -190,7 +194,7 @@ export default function AdminUsersPage() {
                     </button>
                   </td>
                 </tr>
-              ))}
+              )})}
             </tbody>
           </table>
           {filteredUsers.length === 0 && (

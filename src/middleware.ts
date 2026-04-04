@@ -78,13 +78,14 @@ export async function middleware(request: NextRequest) {
 
   
   if (pathname.startsWith('/dashboard')) {
-    const { data: subscription } = await supabase
+    const { data: subscriptions } = await supabase
       .from('subscriptions')
       .select('status')
       .eq('user_id', user.id)
-      .single()
 
-    if (subscription?.status !== 'active') {
+    const isActive = subscriptions?.some(s => s.status === 'active')
+
+    if (!isActive) {
       return NextResponse.redirect(new URL('/subscribe', request.url))
     }
   }
