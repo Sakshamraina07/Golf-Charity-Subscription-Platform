@@ -27,13 +27,19 @@ export default function SignupPage() {
         body: JSON.stringify({ email, password, fullName })
       })
 
-      const data = await res.json()
-
-      if (data.error) {
-        setError(data.error)
+      if (!res.ok) {
+        const contentType = res.headers.get('content-type')
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await res.json()
+          setError(errorData.error || `Server error: ${res.status}`)
+        } else {
+          setError(`Server returned an unexpected response (${res.status}). Please check middleware or server logs.`)
+        }
         setLoading(false)
         return
       }
+
+      const data = await res.json()
 
       // Bypass successful, now auto-login using the client SDK
       const { error: loginError } = await supabase.auth.signInWithPassword({
@@ -42,8 +48,7 @@ export default function SignupPage() {
       })
 
       if (loginError) {
-        setError('Account created securely! Please sign in.')
-        // Redirect to login if auto-login fails
+        setError('Account created securely! Please sign in manually once.')
         router.push('/login')
         return
       }
@@ -51,7 +56,8 @@ export default function SignupPage() {
       router.push('/subscribe')
       router.refresh()
     } catch (err: any) {
-      setError('Connection to auth server failed. Please try again.')
+      console.error('Signup error:', err)
+      setError(`An unexpected error occurred during signup: ${err.message || 'Check console'}`)
       setLoading(false)
     }
   }
