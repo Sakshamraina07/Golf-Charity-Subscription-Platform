@@ -4,50 +4,36 @@ import { NextResponse } from 'next/server'
 export async function GET() {
   const supabase = createAdminClient()
 
-  // Try fetching users with their subscriptions
-  const { data: users, error } = await supabase
+  // Step 1: Fetch all profiles (this should ALWAYS work)
+  const { data: profiles, error: profileError } = await supabase
     .from('profiles')
-    .select(`
-      id,
-      full_name,
-      role,
-      created_at,
-      subscriptions (
-        plan,
-        status,
-        expires_at,
-        charity_percent
-      )
-    `)
+    .select('id, full_name, role, created_at')
     .order('created_at', { ascending: false })
 
-  if (error) {
-    console.error('Admin users fetch error:', error)
-    // Updated fallback to still include subscriptions
-    const { data: fallbackUsers, error: fallbackError } = await supabase
-      .from('profiles')
-      .select(`
-        id, 
-        full_name, 
-        role, 
-        created_at,
-        subscriptions (
-          plan,
-          status,
-          expires_at,
-          charity_percent
-        )
-      `)
-      .order('created_at', { ascending: false })
-
-    if (fallbackError) {
-      return NextResponse.json({ error: fallbackError.message }, { status: 500 })
-    }
-    
-    return NextResponse.json({ users: fallbackUsers || [] })
+  if (profileError) {
+    console.error('Profiles fetch error:', profileError)
+    return NextResponse.json({ error: profileError.message }, { status: 500 })
   }
 
-  return NextResponse.json({ users: users || [] })
+  // Step 2: Fetch all subscriptions separately (won't crash if FK is missing)
+  const { data: subscriptions, error: subError } = await supabase
+    .from('subscriptions')
+    .select('user_id, plan, status, expires_at, charity_percent')
+
+  if (subError) {
+    console.error('Subscriptions fetch error (non-fatal):', subError)
+  }
+
+  // Step 3: Merge them in code — bulletproof, no join needed
+  const users = (profiles || []).map(profile => {
+    const userSubs = (subscriptions || []).filter(s => s.user_id === profile.id)
+    return {
+      ...profile,
+      subscriptions: userSubs.length > 0 ? userSubs : null
+    }
+  })
+
+  return NextResponse.json({ users })
 }
 
 export async function PATCH(req: Request) {
