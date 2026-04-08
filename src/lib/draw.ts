@@ -32,8 +32,9 @@ export async function runDrawSimulation(month: string, drawType: string = 'rando
   const carryOver = lastDraw?.jackpot_rollover || 0
 
   const jackpotPool = (prizePool * 0.4) + carryOver
-  const match4Pool = prizePool * 0.35
-  const match3Pool = prizePool * 0.25
+  const match4Pool = prizePool * 0.3
+  const match3Pool = prizePool * 0.15
+  const match2Pool = prizePool * 0.15
 
   // 4. Collect participants and their scores
   const participants: { userId: string, scores: number[] }[] = []
@@ -47,7 +48,7 @@ export async function runDrawSimulation(month: string, drawType: string = 'rando
       .order('created_at', { ascending: false })
       .limit(5)
 
-    if (scoresData && scoresData.length === 5) {
+    if (scoresData && scoresData.length >= 5) {
       participants.push({
         userId: sub.user_id,
         scores: scoresData.map(s => s.score)
@@ -96,6 +97,7 @@ export async function runDrawSimulation(month: string, drawType: string = 'rando
   const match5Winners: string[] = []
   const match4Winners: string[] = []
   const match3Winners: string[] = []
+  const match2Winners: string[] = []
 
   const winNumbersSet = new Set(winningNumbers)
 
@@ -111,6 +113,7 @@ export async function runDrawSimulation(month: string, drawType: string = 'rando
     if (matchCount === 5) match5Winners.push(p.userId)
     else if (matchCount === 4) match4Winners.push(p.userId)
     else if (matchCount === 3) match3Winners.push(p.userId)
+    else if (matchCount === 2) match2Winners.push(p.userId)
   })
 
   const newRollover = match5Winners.length === 0 ? jackpotPool : 0
@@ -125,13 +128,15 @@ export async function runDrawSimulation(month: string, drawType: string = 'rando
       jackpotPool,
       match4Pool,
       match3Pool,
+      match2Pool,
       jackpotRollover: newRollover
     },
     participants,
     winners: {
       match5: match5Winners,
       match4: match4Winners,
-      match3: match3Winners
+      match3: match3Winners,
+      match2: match2Winners
     }
   }
 }

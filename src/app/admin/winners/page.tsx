@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect } from 'react'
 import {
@@ -125,7 +125,8 @@ export default function AdminWinnersPage() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full ${w.match_type === 'match_5' ? 'bg-amber-500/10 text-amber-500' :
                       w.match_type === 'match_4' ? 'bg-blue-500/10 text-blue-400' :
-                        'bg-zinc-800 text-zinc-500'
+                        w.match_type === 'match_3' ? 'bg-zinc-800 text-zinc-300' :
+                          'bg-emerald-500/5 text-emerald-500/70 border border-emerald-500/10'
                       }`}>
                       {w.match_type?.replace('_', ' ')}
                     </span>
