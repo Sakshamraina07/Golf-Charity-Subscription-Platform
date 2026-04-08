@@ -214,28 +214,33 @@ export default function AdminDrawsPage() {
                     <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Prize Distribution</p>
                     <span className="text-[10px] font-black text-emerald-400 px-2 py-0.5 bg-emerald-500/10 rounded-full">SIMULATED</span>
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="space-y-1">
-                      <div className="text-[10px] text-zinc-600 font-bold">MATCH 5</div>
-                      <div className="text-lg font-black text-amber-500">£{simulationResult.pools.jackpotPool.toFixed(2)}</div>
-                      <div className="text-[10px] text-zinc-500">{simulationResult.winners.match5.length} winners</div>
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                      <div className="space-y-1">
+                        <div className="text-[10px] text-zinc-600 font-bold">MATCH 5</div>
+                        <div className="text-lg font-black text-amber-500">£{simulationResult.pools.jackpotPool.toFixed(2)}</div>
+                        <div className="text-[10px] text-zinc-500">{simulationResult.winners.match5.length} winners</div>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="text-[10px] text-zinc-600 font-bold">MATCH 4</div>
+                        <div className="text-lg font-black text-zinc-200">£{simulationResult.pools.match4Pool.toFixed(2)}</div>
+                        <div className="text-[10px] text-zinc-500">{simulationResult.winners.match4.length} winners</div>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="text-[10px] text-zinc-600 font-bold">MATCH 3</div>
+                        <div className="text-lg font-black text-zinc-400">£{simulationResult.pools.match3Pool.toFixed(2)}</div>
+                        <div className="text-[10px] text-zinc-500">{simulationResult.winners.match3.length} winners</div>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="text-[10px] text-zinc-600 font-bold">MATCH 2</div>
+                        <div className="text-lg font-black text-emerald-400/70">£{simulationResult.pools.match2Pool.toFixed(2)}</div>
+                        <div className="text-[10px] text-zinc-500">{simulationResult.winners.match2.length} winners</div>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="text-[10px] text-zinc-600 font-bold">MATCH 1</div>
+                        <div className="text-lg font-black text-zinc-500">£{simulationResult.pools.match1Pool.toFixed(2)}</div>
+                        <div className="text-[10px] text-zinc-500">{simulationResult.winners.match1.length} winners</div>
+                      </div>
                     </div>
-                    <div className="space-y-1">
-                      <div className="text-[10px] text-zinc-600 font-bold">MATCH 4</div>
-                      <div className="text-lg font-black text-zinc-200">£{simulationResult.pools.match4Pool.toFixed(2)}</div>
-                      <div className="text-[10px] text-zinc-500">{simulationResult.winners.match4.length} winners</div>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="text-[10px] text-zinc-600 font-bold">MATCH 3</div>
-                      <div className="text-lg font-black text-zinc-400">£{simulationResult.pools.match3Pool.toFixed(2)}</div>
-                      <div className="text-[10px] text-zinc-500">{simulationResult.winners.match3.length} winners</div>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="text-[10px] text-zinc-600 font-bold">MATCH 2</div>
-                      <div className="text-lg font-black text-emerald-400/70">£{simulationResult.pools.match2Pool.toFixed(2)}</div>
-                      <div className="text-[10px] text-zinc-500">{simulationResult.winners.match2.length} winners</div>
-                    </div>
-                  </div>
                 </div>
 
                 {/* Rollover */}

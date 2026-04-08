@@ -59,6 +59,7 @@ export async function POST(req: Request) {
       ...result.winners.match4.map(uid => ({ userId: uid, matchType: 'match_4', pool: result.pools.match4Pool, count: result.winners.match4.length })),
       ...result.winners.match3.map(uid => ({ userId: uid, matchType: 'match_3', pool: result.pools.match3Pool, count: result.winners.match3.length })),
       ...result.winners.match2.map(uid => ({ userId: uid, matchType: 'match_2', pool: result.pools.match2Pool, count: result.winners.match2.length })),
+      ...result.winners.match1.map(uid => ({ userId: uid, matchType: 'match_1', pool: result.pools.match1Pool, count: result.winners.match1.length })),
     ]
 
     for (const w of allWinners) {
