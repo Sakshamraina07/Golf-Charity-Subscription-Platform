@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import {
   Target,
   Settings,
@@ -75,10 +76,10 @@ export default function AdminDrawsPage() {
           <p className="text-zinc-500">Configure and execute monthly prize draws</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="px-4 py-2 border border-zinc-800 bg-zinc-900 rounded-xl text-xs font-bold text-zinc-500 hover:text-zinc-300 transition-colors flex items-center gap-2">
+          <Link href="/admin/winners" className="px-4 py-2 border border-zinc-800 bg-zinc-900 rounded-xl text-xs font-bold text-zinc-500 hover:text-zinc-300 transition-colors flex items-center gap-2">
             <History className="w-4 h-4" />
             View Past Draws
-          </button>
+          </Link>
         </div>
       </div>
 

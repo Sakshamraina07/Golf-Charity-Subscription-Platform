@@ -30,7 +30,6 @@ export async function POST(req: Request) {
         jackpot_pool: result.pools.jackpotPool,
         match4_pool: result.pools.match4Pool,
         match3_pool: result.pools.match3Pool,
-        match2_pool: result.pools.match2Pool,
         jackpot_rollover: result.pools.jackpotRollover,
         total_subscribers: result.pools.totalSubscribers,
       }, { onConflict: 'month' })
