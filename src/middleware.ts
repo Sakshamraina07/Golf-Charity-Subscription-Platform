@@ -44,8 +44,11 @@ export async function middleware(request: NextRequest) {
 
   if (isPublicRoute) {
     
-    if (user && (pathname === '/login' || pathname === '/signup' || pathname === '/admin/login')) {
+    if (user && (pathname === '/login' || pathname === '/signup')) {
       return NextResponse.redirect(new URL('/dashboard', request.url))
+    }
+    if (user && pathname === '/admin/login') {
+      return NextResponse.redirect(new URL('/admin', request.url))
     }
     return supabaseResponse
   }

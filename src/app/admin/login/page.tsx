@@ -40,7 +40,7 @@ export default function AdminLoginPage() {
 
       if (profile?.role !== 'admin') {
         await supabase.auth.signOut()
-        setError('Unauthorized. Admin access only.')
+        setError('This account does not have admin privileges. Please use the regular login.')
         setLoading(false)
         return
       }
@@ -118,7 +118,7 @@ export default function AdminLoginPage() {
                 <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
                 <>
-                  Authenticate
+                  Sign In as Admin
                   <ArrowRight className="w-5 h-5" />
                 </>
               )}
